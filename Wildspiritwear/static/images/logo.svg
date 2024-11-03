@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="50" viewBox="0 0 300 50">
+  <!-- T-shirt icon with improved styling and positioning -->
+  <path d="M180 15 h24 l-4 8 h-4 l-2 20 h-12 l-2 -20 h-4 l-4 -8z" 
+        fill="white" 
+        stroke="white" 
+        stroke-width="1.5"/>
+  
+  <!-- Needle and thread with enhanced detail -->
+  <path d="M210 25 q5,8 10,0 M215 25 l3,-3 M218 22 l2,-2" 
+        stroke="white" 
+        fill="none" 
+        stroke-width="1.5"/>
+  
+  <!-- Thread details -->
+  <circle cx="215" cy="25" r="1" fill="white"/>
+  
+  <!-- Company name with better positioning -->
+  <text x="10" y="35" 
+        font-family="Arial, sans-serif" 
+        font-size="32" 
+        font-weight="bold" 
+        fill="white" 
+        letter-spacing="1">ThreadCraft</text>
+</svg>
