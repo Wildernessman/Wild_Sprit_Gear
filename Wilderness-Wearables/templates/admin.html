@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ThreadCraft</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        async function initializeTinyMCE() {
+            try {
+                const editors = document.querySelectorAll('textarea[name="content"]');
+                if (editors.length === 0) {
+                    return;
+                }
+
+                await tinymce.init({
+                    selector: 'textarea[name="content"]',
+                    plugins: 'autoresize wordcount autolink link image lists table code hr emoticons',
+                    toolbar: 'styles | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | link image | table | code',
+                    style_formats: [
+                        { title: 'Headers', items: [
+                            { title: 'Header 1', format: 'h1' },
+                            { title: 'Header 2', format: 'h2' },
+                            { title: 'Header 3', format: 'h3' }
+                        ]},
+                        { title: 'Custom', items: [
+                            { title: 'Product Name', inline: 'span', attributes: { class: 'product-name' } },
+                            { title: 'Price Tag', inline: 'span', attributes: { class: 'price-tag' } },
+                            { title: 'Featured Text', inline: 'span', attributes: { class: 'featured-text' } }
+                        ]}
+                    ],
+                    skin: 'oxide-dark',
+                    content_css: 'dark',
+                    height: 300,
+                    menubar: true,
+                    branding: false,
+                    promotion: false,
+                    max_chars: 500,
+                    setup: function(editor) {
+                        editor.on('keyup', function(e) {
+                            const count = editor.plugins.wordcount.body.getCharacterCount();
+                            if (count > 500) {
+                                const content = editor.getContent({format: 'text'});
+                                editor.setContent(content.substring(0, 500));
+                            }
+                        });
+                    }
+                });
+            } catch (error) {
+                console.error('TinyMCE initialization error:', error);
+                // Add a fallback for when TinyMCE fails to load
+                document.querySelectorAll('textarea[name="content"]').forEach(textarea => {
+                    textarea.style.height = '300px';
+                    textarea.style.width = '100%';
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTinyMCE().catch(error => {
+                console.error('Failed to initialize TinyMCE:', error);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>ThreadCraft Content Management</h1>
+        {% for section in sections %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Section {{ section.position }}</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('update_section', section_id=section.id) }}" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="content-{{ section.id }}" class="form-label">Content (max 500 characters)</label>
+                        <textarea class="form-control" id="content-{{ section.id }}" name="content" maxlength="500">{{ section.content }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image-{{ section.id }}" class="form-label">Image</label>
+                        <input type="file" class="form-control" id="image-{{ section.id }}" name="image" accept="image/*">
+                        {% if section.image_path %}
+                        <small class="text-muted">Current image: {{ section.image_path }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="video-{{ section.id }}" class="form-label">Video</label>
+                        <input type="file" class="form-control" id="video-{{ section.id }}" name="video" accept="video/*">
+                        {% if section.video_path %}
+                        <small class="text-muted">Current video: {{ section.video_path }}</small>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Section</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

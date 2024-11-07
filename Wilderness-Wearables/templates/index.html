@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadCraft - Premium T-Shirts</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="/static/images/logo.svg" alt="ThreadCraft Logo" height="40">
+            </a>
+        </div>
+    </nav>
+
+    <main class="container py-4" style="margin-top: 70px;">
+        {% for section in sections %}
+        <section class="content-section mb-5" id="section-{{ section.position }}">
+            {% if section.image_path %}
+            <div class="image-container">
+                <img src="/static/uploads/{{ section.image_path }}" alt="Section {{ section.position }} image" class="section-image">
+            </div>
+            {% endif %}
+            <div class="video-container">
+                {% if section.video_path %}
+                <video controls>
+                    <source src="/static/uploads/{{ section.video_path }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                {% else %}
+                <div class="video-placeholder">
+                    <p class="text-muted">No video uploaded</p>
+                </div>
+                {% endif %}
+            </div>
+            <div class="content">{{ section.content | safe }}</div>
+        </section>
+        {% endfor %}
+    </main>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
